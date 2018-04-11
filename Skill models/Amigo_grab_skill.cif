@@ -1,0 +1,48 @@
+//////////////////////////////////////////////////////////
+// CIF automata based specification of Amigo Grab Skill //
+//////////////////////////////////////////////////////////
+requirement grab_skill:
+
+    controllable grab, determine_grab_arm;
+
+    input int [0..2] use_arm; //0 nothing, 1 left, 2 right
+
+    location idling:
+    initial;
+    marked;
+    edge grab goto grabbing;
+
+    location grabbing:
+    marked;
+    edge determine_grab_arm when use_arm = 0;
+    edge left_grab_exec.start when use_arm = 1 goto idling;
+    edge right_grab_exec.start when use_arm = 2 goto idling;
+end
+
+requirement def grab_exec(Arm arm):
+    controllable check_in_WS, start, complete, idle;
+
+    input int [0..2] object_in_WS;
+
+    location idling:
+    initial;
+    marked;
+    edge start goto starting;
+
+    location starting:
+    edge check_in_WS when object_in_WS = 0; 
+    edge arm.plan when object_in_WS = 1;
+    edge arm.plan_to_grab when object_in_WS = 2;
+    edge complete when arm.object_in_arm goto completing;
+
+    location completing:
+    marked;
+    edge idle goto idling;
+
+end
+
+left_grab_exec: grab_exec(arm_left);
+right_grab_exec: grab_exec(arm_right);
+
+
+

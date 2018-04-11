@@ -1,0 +1,76 @@
+//////////////////////////////
+// CIF MODEL OF AMIGO ROBOT //
+//////////////////////////////
+
+plant automaton def Arm():
+    controllable idle, move, plan, replan, plan_to_grab, grab;
+
+    input int [0..2] plan_viable;
+    input bool collision_on_path;
+    input bool moving_arm;
+    input bool goal_reached;
+    input bool object_in_arm;
+
+    location idling:
+    marked;
+    initial;
+    edge plan goto planning;
+    edge plan_to_grab goto planning_to_grab;
+
+    location planning:
+    marked;
+    edge move goto moving;
+    edge idle goto idling;
+
+    location planning_to_grab:
+    marked;
+    edge grab goto grabbing;
+    edge idle goto idling;
+
+    location replanning:
+    marked;
+    edge move goto moving;
+    edge grab goto grabbing;
+    edge idle goto idling;
+
+    location moving:
+    marked;
+    edge plan_to_grab goto planning_to_grab;
+    edge replan goto replanning;
+    edge idle when (goal_reached or moving_arm != true) goto idling;
+
+    location grabbing:
+    marked;
+    edge plan goto planning;
+    edge replan goto replanning;
+    edge idle when (object_in_arm or moving_arm != true) goto idling;
+
+end
+
+arm_left: Arm();
+arm_right: Arm();
+
+// Base
+plant automaton base:
+    controllable idle, move, plan;
+
+    input int [0..2] plan_viable;
+    input bool collision_on_path;
+    input bool moving_base;
+    input bool goal_reached;
+
+    location idling:
+    marked;
+    initial;
+    edge plan goto planning;
+
+    location planning:
+    marked;
+    edge move goto moving;
+    edge idle when plan_viable = 2 goto idling;
+
+    location moving:
+    marked;
+    edge plan when plan_viable != 1 goto planning;
+    edge idle when (goal_reached or moving_base != true) goto idling;
+end

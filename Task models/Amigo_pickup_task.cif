@@ -1,0 +1,27 @@
+///////////////////////////////////////////////////////////////
+// CIF automata based specification of Case Study I: Pick-up //
+///////////////////////////////////////////////////////////////
+
+requirement task:
+   controllable waiting, goto_phase2;
+
+    input bool object_grabbed;
+    disc bool navigating = false;
+    disc bool grabbing = false;
+
+    location phase1:
+    initial;
+    marked;
+    edge navigation_skill.move_to when navigating = false do navigating := true;
+    edge grab_skill.grab when grabbing = false do grabbing := true;
+    edge waiting when navigating = true and grabbing = true do navigating := false and grabbing := false goto wait;
+
+    location wait:
+    marked;
+    edge goto_phase2 when object_grabbed = true goto phase2;
+
+    location phase2:
+    marked;
+    edge navigation_skill.move_to when navigating = false do navigating := true;
+    edge place_skill.release when grabbing = false do grabbing := true;
+end

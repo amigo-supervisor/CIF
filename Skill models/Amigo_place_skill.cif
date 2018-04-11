@@ -1,0 +1,48 @@
+///////////////////////////////////////////////////////////
+// CIF automata based specification of Amigo Place Skill //
+///////////////////////////////////////////////////////////
+requirement place_skill:
+
+    controllable place, determine_place_arm;
+
+    input int [0..2] use_arm;
+
+    location idling:
+    initial;
+    marked;
+    edge release goto releasing;
+
+    location releasing:
+    marked;
+    edge determine_place_arm when use_arm = 0;
+    edge left_place_exec.start when use_arm = 1 goto idling;
+    edge right_place_exec.start when use_arm = 2 goto idling;
+end
+
+requirement def place_exec(Arm arm):
+    controllable check_place_ready, start, complete, idle;
+
+    input int [0..2] place_ready;
+
+    location idling:
+    initial;
+    marked;
+    edge start goto starting;
+
+    location starting:
+    edge check_place_ready when place_ready = 0; 
+    edge arm.plan when place_ready = 1;
+    edge arm.plan_to_place when place_ready = 2;
+    edge complete when arm.object_in_arm = false goto completing;
+
+    location completing:
+    marked;
+    edge idle goto idling;
+
+end
+
+left_place_exec: place_exec(arm_left);
+right_place_exec: place_exec(arm_right);
+
+
+

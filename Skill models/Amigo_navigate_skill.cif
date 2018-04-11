@@ -1,0 +1,17 @@
+////////////////////////////////////////////////////////////////
+// CIF automata based specification of Amigo Navigation Skill //
+////////////////////////////////////////////////////////////////
+
+requirement navigation_skill:
+    controllable move_to;
+
+	location idle:
+	initial;
+	marked;
+	edge move_to goto moving_to;
+
+	location moving_to:
+	edge base.plan goto idle;
+	marked;
+
+end
