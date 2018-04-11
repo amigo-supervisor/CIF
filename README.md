@@ -58,8 +58,7 @@ This folder contains the C99 library of the supervisor synthesized in CIF, it al
         // #include "Amigo_engine.h"
         #include "Amigo_library.h"
         ```
-        
-    + Remove `Amigo_PrintOutput(const char *line, const char *fname)` from Amigo\_engine.c as well, since we did not declare or define that
+     + Remove `Amigo_PrintOutput(const char *line, const char *fname)` from Amigo\_engine.c as well, since we did not declare or define that
 
 - Now run the following in the C99 folder: `python2 cffi_amigo_engine.py`
 - This will create `_amigo_engine.so`, copy this file to challenge\_supervisor/src/cif/ in the tue\_robocup repo
