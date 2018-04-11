@@ -33,7 +33,7 @@ This folder contains the C99 library of the supervisor synthesized in CIF, it al
    + from Amigo_engine.h remove all directives (#if, #define, etc)
    + from Amigo_engine.h remove all extern functions
    + from Amigo_engine.h remove all includes
-   + to make sure Amigo_engine.h knows of all the CIF specific types, past this at the top of the header:
+   + to make sure Amigo_engine.h knows of all the CIF specific types, paste this at the top of the header:
          
        ```c
        typedef _Bool BoolType;
