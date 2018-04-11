@@ -61,3 +61,4 @@ This folder contains the C99 library of the supervisor synthesized in CIF, it al
 
 - Now run the following in the C99 folder: `python2 cffi_amigo_engine.py`
 - This will create `_amigo_engine.so`, copy this file to challenge\_supervisor/src/cif/ in the tue\_robocup repo
+- We can now execute `roslaunch challenge_supervisor.launch` in the amigo_brinhup/launch/state_machines folder on the robot
