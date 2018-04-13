@@ -2,3 +2,13 @@
 // CIF automata based specification of Case Study II: Dynamic Grab //
 /////////////////////////////////////////////////////////////////////
 
+requirement task:
+	disc int grabbing = 0;
+
+    location phase1:
+    initial;
+    marked;
+    edge grab_skill.grab when grabbing != 2 do grabbing := grabbing + 1;
+ 
+ end
+
