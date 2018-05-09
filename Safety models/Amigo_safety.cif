@@ -9,6 +9,7 @@ requirement def SafeArmMovement(Arm arm):
     edge arm.replan when arm.collision_on_path or arm.plan_viable != 1;
     edge arm.move when arm.plan_viable = 1 and not arm.collision_on_path;
     edge arm.grab when arm.plan_viable = 1 and not arm.collision_on_path;
+    edge arm.place when arm.plan_viable = 1 and not arm.collision_on_path;
     edge arm.idle when arm.plan_viable = 2 or arm.goal_reached or (arm.moving and arm.moving_arm = false);
 end
 

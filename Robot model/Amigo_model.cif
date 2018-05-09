@@ -3,7 +3,7 @@
 //////////////////////////////
 
 plant automaton def Arm():
-    controllable idle, move, plan, replan, plan_to_grab, grab;
+    controllable idle, move, plan, replan, plan_to_grab, plan_to_place, grab, place;
 
     input int [0..2] plan_viable;
     input bool collision_on_path;
@@ -16,6 +16,7 @@ plant automaton def Arm():
     initial;
     edge plan goto planning;
     edge plan_to_grab goto planning_to_grab;
+    edge plan_to_place goto planning_to_place;
 
     location planning:
     marked;
@@ -27,19 +28,32 @@ plant automaton def Arm():
     edge grab goto grabbing;
     edge idle goto idling;
 
+    location planning_to_place:
+    marked;
+    edge place goto placing;
+    edge idle goto idling;
+
     location replanning:
     marked;
     edge move goto moving;
     edge grab goto grabbing;
+    edge place goto placing
     edge idle goto idling;
 
     location moving:
     marked;
     edge plan_to_grab goto planning_to_grab;
+    edge plan_to_place goto planning_to_place;
     edge replan goto replanning;
     edge idle when (goal_reached or moving_arm != true) goto idling;
 
     location grabbing:
+    marked;
+    edge plan goto planning;
+    edge replan goto replanning;
+    edge idle when (object_in_arm or moving_arm != true) goto idling;
+
+    location placing:
     marked;
     edge plan goto planning;
     edge replan goto replanning;

@@ -3,7 +3,7 @@
 ///////////////////////////////////////////////////////////
 requirement place_skill:
 
-    controllable place, determine_place_arm;
+    controllable release, determine_place_arm;
 
     input int [0..2] use_arm;
 
